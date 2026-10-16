@@ -1,0 +1,1197 @@
+/* ---------- Nav Bar ---------- */
+.site-nav {
+    position: fixed;   /* stick on top of the hero instead of pushing it down */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;          /* above all hero layers */
+    background-color: transparent;
+    padding: 1rem 0;
+    border-bottom: 1px solid transparent;
+    transition: background-color 0.3s ease,
+                backdrop-filter 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease,
+                padding 0.3s ease;
+}
+
+/* Glassmorphism: added by the script at the bottom of index.html once you scroll down.
+   - background: see-through warm brown tint (last number = how solid; 0.35–0.6 looks best)
+   - backdrop-filter: blurs (and slightly boosts the color of) whatever is behind the bar
+   - border + shadow: a thin light edge and soft drop shadow so the glass "floats" */
+.site-nav.scrolled {
+    background-color: rgba(20, 12, 6, 0.45);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.site-nav .navbar-brand {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.site-nav {
+    --nav-accent: #e8650a;   /* same orange as the Apply Now button */
+}
+
+.site-nav .nav-link {
+    position: relative;      /* anchors the ::after underline */
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0 0.75rem;
+    padding-bottom: 0.3rem;
+    transition: color 0.3s ease, transform 0.15s ease;
+}
+
+/* Underline: hidden (scaled to 0 width) and grows out from the center */
+.site-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: white;
+    transform: scaleX(0);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* On desktop Bootstrap adds side padding to links, so keep the underline under the text only */
+@media (min-width: 992px) {
+    .site-nav .nav-link::after {
+        left: var(--bs-navbar-nav-link-padding-x);
+        right: var(--bs-navbar-nav-link-padding-x);
+    }
+}
+
+/* Hover: text brightens, underline grows halfway */
+.site-nav .nav-link:hover {
+    color: white;
+}
+
+.site-nav .nav-link:hover::after {
+    transform: scaleX(0.6);
+}
+
+/* Selected: the section you're on (set by the script as you scroll), full underline */
+.site-nav .nav-link.active {
+    color: white;
+    font-weight: 600;
+}
+
+.site-nav .nav-link.active::after {
+    transform: scaleX(1);
+}
+
+/* Press: tiny "click" squish */
+.site-nav .nav-link:active {
+    transform: scale(0.95);
+}
+
+/* Keyboard focus */
+.site-nav .nav-link:focus-visible {
+    outline: 2px solid var(--nav-accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+
+/* Once the glass background appears: hover + selected turn orange */
+.site-nav.scrolled .nav-link:hover,
+.site-nav.scrolled .nav-link.active {
+    color: var(--nav-accent);
+}
+
+.site-nav.scrolled .nav-link::after {
+    background: var(--nav-accent);
+}
+
+/* On small screens give the dropdown menu a dark backing so it's readable */
+@media (max-width: 991.98px) {
+    .site-nav .navbar-collapse {
+        background: rgba(0, 0, 0, 0.75);
+        padding: 0.5rem 1rem;
+        margin-top: 0.5rem;
+        border-radius: 0.5rem;
+    }
+    /* Once scrolled the whole bar is glass, so the menu doesn't need its own backing */
+    .site-nav.scrolled .navbar-collapse {
+        background: transparent;
+    }
+    .site-nav .nav-link {
+        margin: 0;
+        display: inline-block;
+    }
+}
+
+/* ---------- Hero ---------- */
+.hero-banner {
+    position: relative;   /* children position themselves relative to this */
+    height: 100vh;        /* fill the screen */
+    overflow: hidden;
+}
+
+/* Shared settings for both image layers */
+.hero-layer {
+    position: absolute;
+    inset: 0;             /* top/right/bottom/left: 0, so it fills the banner */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Parallax: --scroll is set by the script at the bottom of index.html.
+   The bigger the multiplier, the slower the layer seems to move (it looks farther away). */
+.hero-layer-1 {
+    background-image: url('../images/Hero_layer1.png');
+    z-index: 1;           /* bottom */
+    transform: translateY(calc(var(--scroll, 0) * 0.5px));
+    will-change: transform;
+}
+
+/* Title block: big KGRF + subtitle row underneath */
+.hero-title {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, calc(-50% + var(--scroll, 0) * 0.3px));
+    will-change: transform;
+    z-index: 2;           /* middle: the "sandwich filling" */
+    color: white;
+}
+
+.hero-text {
+    font-family: 'Monoton', sans-serif;
+    font-size: clamp(23rem, 20vw, 15rem); /* shrinks on small screens */
+    line-height: 1;
+    margin: 0 0 -0.15em;  /* pull the subtitle up into Monoton's empty space below the letters */
+    white-space: nowrap;
+}
+
+/* "KAMPFGRUPPE" on the left, "Filipinas" on the right */
+.hero-sub {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Monoton', sans-serif;
+    font-size: clamp(0.7rem, 1.8vw, 1.3rem);
+    letter-spacing: 0.25em;
+    padding: 0.5rem 1rem;
+}
+
+/* ---------- Hero intro animation ----------
+   Animates .hero-text and .hero-sub (not .hero-title, whose transform is used by the parallax). */
+/* Each letter slides up from low on the screen, one after another.
+   Fast start, soft landing (the cubic-bezier), so the movement is easy to see. */
+.hero-text span {
+    display: inline-block;   /* transform doesn't work on plain inline text */
+    animation: hero-slide-up 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Stagger: K, then G, then R, then F */
+.hero-text span:nth-child(1) { animation-delay: 0.2s; }
+.hero-text span:nth-child(2) { animation-delay: 0.35s; }
+.hero-text span:nth-child(3) { animation-delay: 0.5s; }
+.hero-text span:nth-child(4) { animation-delay: 0.65s; }
+
+.hero-sub {
+    animation: hero-rise 0.8s ease-out 1.3s both;  /* comes in as the last letter lands */
+}
+
+@keyframes hero-slide-up {
+    0% {
+        opacity: 0;
+        transform: translateY(50vh);   /* start half a screen lower */
+    }
+    30% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Fades in while sliding up */
+@keyframes hero-rise {
+    from {
+        opacity: 0;
+        transform: translateY(1rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* No animation for people who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .hero-text span,
+    .hero-sub {
+        animation: none;
+    }
+}
+
+.hero-layer-2 {
+    background-image: url('../images/Hero_layer2.png');
+    z-index: 3;           /* top */
+    pointer-events: none; /* lets clicks pass through to the text */
+    transform: translateY(calc(var(--scroll, 0) * 0.1px));
+    will-change: transform;
+}
+
+/* ---------- About Us ---------- */
+:root {
+    --nav-height: 4.5rem;     /* roughly how tall the fixed nav bar is; tweak if it's off */
+}
+
+html {
+    scroll-behavior: smooth;           /* nav links glide down to sections */
+    scroll-padding-top: var(--nav-height); /* stop sections from landing under the nav */
+}
+
+.about-section {
+    --accent: #e8650a;
+    --cream: #f3e6cc;
+    --muted: rgba(243, 230, 204, 0.7);
+
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - var(--nav-height)); /* fill exactly the space below the nav */
+    padding: 4rem 0;
+    color: var(--cream);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.about-section > .container-fluid {
+    width: 100%;
+}
+
+/* Photo on the left, fading to near-black on the right behind the text.
+   It sits on the parallax layer (see "Section parallax" below). */
+.about-section::before {
+    background:
+        linear-gradient(90deg,
+            rgba(14, 10, 6, 0.2) 0%,
+            rgba(14, 10, 6, 0.75) 45%,
+            rgba(14, 10, 6, 0.95) 60%),
+        url('../images/About_usBG.png') left center / cover no-repeat;
+}
+
+/* Fills the whole right half (no max-width) */
+.about-content {
+    min-width: 0;
+}
+
+/* Small orange line above the title */
+.about-eyebrow {
+    margin-bottom: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+/* Same size as the Requirements / Community titles */
+.about-title {
+    font-family: 'Monoton', sans-serif;
+    font-size: clamp(2.5rem, 7.5vw, 7rem);
+    line-height: 1;
+    margin: 0 0 1.75rem;
+    text-transform: uppercase;
+    color: white;
+}
+
+.about-lead,
+.about-text {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+}
+
+.about-lead {
+    color: var(--cream);
+}
+
+.about-lead strong {
+    color: var(--accent);
+}
+
+.about-text {
+    color: var(--muted);
+}
+
+/* ----- Three value cards ----- */
+.about-values {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.about-value {
+    padding: 1.1rem;
+    background: rgba(20, 12, 6, 0.5);
+    border: 1px solid rgba(243, 230, 204, 0.12);
+    border-radius: 0.5rem;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.about-value:hover {
+    border-color: rgba(232, 101, 10, 0.5);
+    transform: translateY(-3px);
+}
+
+.about-value svg {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-bottom: 0.75rem;
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.about-value h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    color: white;
+}
+
+.about-value p {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0;
+}
+
+/* ----- Stats row ----- */
+/* Three equal columns, lined up with the value cards above */
+.about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.about-stats > div {
+    min-width: 0;                 /* lets long values wrap instead of stretching the column */
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--accent);
+}
+
+.about-stat-num {
+    display: block;
+    font-size: clamp(0.95rem, 1.4vw, 1.25rem);  /* shrinks a little on smaller screens */
+    font-weight: 700;
+    line-height: 1.3;
+    color: white;
+    overflow-wrap: break-word;
+}
+
+.about-stat-label {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+/* Phones: one stat per row */
+@media (max-width: 575.98px) {
+    .about-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ----- Buttons ----- */
+.about-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.about-btn {
+    display: inline-block;
+    padding: 0.75rem 1.6rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 0.4rem;
+    border: 1px solid transparent;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.about-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Filled orange, same as Apply Now */
+.about-btn-primary {
+    color: #1a0f06;
+    background-color: var(--accent);
+    box-shadow: 0 6px 20px rgba(232, 101, 10, 0.3);
+}
+
+.about-btn-primary:hover {
+    color: #1a0f06;
+    background-color: #ff7a1a;
+}
+
+/* Outline */
+.about-btn-outline {
+    color: var(--cream);
+    border-color: rgba(243, 230, 204, 0.4);
+}
+
+.about-btn-outline:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+/* Phones/tablets: the text covers the photo, so darken it evenly; cards stack on phones */
+@media (max-width: 991.98px) {
+    .about-section::before {
+        background:
+            linear-gradient(rgba(14, 10, 6, 0.85), rgba(14, 10, 6, 0.85)),
+            url('../images/About_usBG.png') left center / cover no-repeat;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .about-values {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- Requirements ---------- */
+.req-section {
+    --accent: #e8650a;               /* orange for ticks / progress */
+    --cream: #f3e6cc;                /* headings */
+    --muted: rgba(243, 230, 204, 0.65); /* descriptions */
+    --line: rgba(243, 230, 204, 0.12);  /* dividers */
+
+    min-height: calc(100vh - var(--nav-height));
+    display: flex;
+    align-items: center;
+    padding: 4rem 0;
+    color: var(--cream);
+}
+
+/* Your photo, darkened on the left behind the list and fading clear toward the right.
+   It sits on the parallax layer (see "Section parallax" below). */
+.req-section::before {
+    background:
+        linear-gradient(90deg,
+            rgba(14, 10, 6, 0.95) 0%,
+            rgba(14, 10, 6, 0.85) 40%,
+            rgba(14, 10, 6, 0.25) 100%),
+        url('../images/RequirementsBG.png') center / cover no-repeat;
+}
+
+.req-section > .container-fluid {
+    width: 100%;
+}
+
+.req-title {
+    font-family: 'Monoton', sans-serif;
+    font-size: clamp(2.5rem, 7.5vw, 7rem);
+    line-height: 1;
+    margin: 0 0 1.25rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Left-hand column holding everything under the title */
+.req-panel {
+    max-width: 30rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.req-intro {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: 2rem;
+}
+
+/* ----- Requirement rows ----- */
+.req-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+}
+
+.req-list li {
+    border-bottom: 1px solid var(--line);
+}
+
+.req-item {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.1rem 0.5rem;
+}
+
+.req-icon {
+    flex: 0 0 2.25rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    fill: none;
+    stroke: var(--cream);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.2s ease, color 0.2s ease;
+}
+
+/* The "III" icon is text instead of an SVG */
+.req-rank {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    line-height: 2.25rem;
+    text-align: center;
+    color: var(--cream);
+}
+
+.req-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.req-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.req-desc {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+/* ----- Join button ----- */
+.req-join {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.85rem 2.25rem;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #1a0f06;
+    background-color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 0.4rem;
+    box-shadow: 0 6px 20px rgba(232, 101, 10, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.req-join:hover {
+    color: #1a0f06;
+    background-color: #ff7a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(232, 101, 10, 0.45);
+}
+
+.req-join:focus-visible {
+    outline: 2px solid var(--cream);
+    outline-offset: 3px;
+}
+
+/* On phones the photo sits behind everything, so darken it evenly */
+@media (max-width: 767.98px) {
+    .req-section::before {
+        background:
+            linear-gradient(rgba(14, 10, 6, 0.88), rgba(14, 10, 6, 0.88)),
+            url('../images/RequirementsBG.png') center / cover no-repeat;
+    }
+}
+
+/* ---------- Community ---------- */
+.com-section {
+    --accent: #e8650a;
+    --cream: #f3e6cc;
+    --muted: rgba(243, 230, 204, 0.65);
+    --line: rgba(243, 230, 204, 0.1);
+
+    min-height: calc(100vh - var(--nav-height));
+    display: flex;
+    align-items: center;
+    padding: 5rem 0;
+    color: var(--cream);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.com-section > .container-fluid {
+    width: 100%;
+}
+
+/* Photo on the parallax layer with a heavy tint.
+   Save a photo as images/CommunityBG.png and it's used automatically;
+   until then Hero_layer1.png underneath shows instead. */
+.com-section::before {
+    background:
+        linear-gradient(rgba(14, 10, 6, 0.88), rgba(14, 10, 6, 0.8)),
+        url('../images/CommunityBG.png') center / cover no-repeat,
+        url('../images/Hero_layer1.png') center / cover no-repeat;
+}
+
+.com-title {
+    font-family: 'Monoton', sans-serif;
+    font-size: clamp(2.5rem, 7.5vw, 7rem);
+    line-height: 1;
+    margin: 0 0 0.75rem;
+    text-align: right;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.com-intro {
+    text-align: right;
+    font-size: 1.1rem;
+    color: var(--muted);
+    margin-bottom: 3rem;
+}
+
+/* ----- Shared glass panel ----- */
+.com-panel {
+    height: 100%;
+    padding: 2rem;
+    background: rgba(20, 12, 6, 0.45);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+
+    /* Starts hidden and slightly lower; the script adds .visible to fade it up */
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.com-panel.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Second panel comes in a moment after the first */
+.row > :nth-child(2) .com-panel {
+    transition-delay: 0.15s;
+}
+
+.com-heading {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent);
+}
+
+/* ----- Top 10 leaderboard ----- */
+.com-board {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Each row: rank | name | points */
+.com-board li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.65rem 0.5rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.com-board li:last-child {
+    border-bottom: none;
+}
+
+.com-board-head {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.com-player {
+    transition: background-color 0.2s ease;
+}
+
+.com-player:hover {
+    background-color: rgba(243, 230, 204, 0.05);
+}
+
+.com-rank {
+    font-weight: 700;
+    color: var(--muted);
+    text-align: center;
+}
+
+.com-name {
+    font-weight: 600;
+}
+
+/* Role under the name, e.g. "Tanker" */
+.com-name small {
+    display: block;
+    font-weight: 400;
+    font-size: 0.75rem;
+    color: var(--muted);
+}
+
+.com-points {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums; /* numbers line up in a column */
+}
+
+/* Top 3: rank shown as a filled circle, gold / silver / bronze */
+.com-player:nth-child(-n + 4) .com-rank {
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    border-radius: 50%;
+    color: #1a0f06;
+}
+.com-player:nth-child(2) .com-rank { background: #e8b04a; } /* 1st */
+.com-player:nth-child(3) .com-rank { background: #c9c2b6; } /* 2nd */
+.com-player:nth-child(4) .com-rank { background: #b8743a; } /* 3rd */
+
+.com-player:nth-child(2) .com-points {
+    color: var(--accent);
+}
+
+/* ----- Events ----- */
+.com-events {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.com-event {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.com-event:last-child {
+    border-bottom: none;
+}
+
+/* Calendar-style date block */
+.com-date {
+    flex: 0 0 4rem;
+    height: 4.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(232, 101, 10, 0.5);
+    border-radius: 0.5rem;
+    background: rgba(232, 101, 10, 0.1);
+}
+
+.com-day {
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.com-month {
+    margin-top: 0.25rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.com-event-body h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0.35rem 0 0.35rem;
+}
+
+.com-event-body p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0;
+}
+
+/* Small pill label: "Weekly" / "Special" */
+.com-tag {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+}
+
+.com-tag-special {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* No fade-in for people who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .com-panel {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+/* ---------- Contact Us ---------- */
+.contact-section {
+    --accent: #e8650a;
+    --cream: #f3e6cc;
+    --muted: rgba(243, 230, 204, 0.7);
+
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: calc(100vh - var(--nav-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 0;
+    color: var(--cream);
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    /* Shown before the first video loads (or if videos are off) */
+    background: #140c06 url('../images/Hero_layer1.png') center / cover no-repeat;
+}
+
+/* ----- Video background ----- */
+/* Videos sit on the parallax layer: 25% taller at the top and bottom,
+   moved by --offset from the parallax script (same as the photo sections) */
+.contact-video {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -25%;
+    bottom: -25%;
+    z-index: -1;
+    transform: translateY(calc(var(--offset, 0) * 1px));
+    will-change: transform;
+}
+
+/* This section moves its videos instead, so it doesn't need the shared ::before layer */
+.contact-section::before {
+    content: none;
+}
+
+.contact-vid {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;          /* fill the section like background-size: cover */
+    opacity: 0;
+    transition: opacity 1s ease; /* the crossfade between clips */
+}
+
+.contact-vid.is-active {
+    opacity: 1;
+}
+
+/* Dark tint over the video so the text stays readable */
+.contact-video::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at center, rgba(14, 10, 6, 0.55), rgba(14, 10, 6, 0.85));
+}
+
+.contact-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-title {
+    font-family: 'Monoton', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 7rem);
+    line-height: 1;
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.contact-intro {
+    font-size: 1.1rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+}
+
+/* Big orange button, same style as Join Now! */
+.contact-cta {
+    display: inline-block;
+    margin-bottom: 3.5rem;
+    padding: 0.95rem 2.5rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #1a0f06;
+    background-color: var(--accent);
+    border-radius: 0.4rem;
+    box-shadow: 0 6px 20px rgba(232, 101, 10, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.contact-cta:hover {
+    color: #1a0f06;
+    background-color: #ff7a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(232, 101, 10, 0.5);
+}
+
+.contact-cards {
+    width: 100%;
+    max-width: 60rem;
+}
+
+/* ----- Glass cards ----- */
+.contact-card {
+    display: block;
+    height: 100%;
+    padding: 2rem 1.5rem;
+    color: var(--cream);
+    text-decoration: none;
+    background: rgba(20, 12, 6, 0.45);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Only the clickable cards (links) react on hover */
+a.contact-card:hover {
+    color: var(--cream);
+    transform: translateY(-4px);
+    border-color: rgba(232, 101, 10, 0.5);
+    background: rgba(20, 12, 6, 0.6);
+}
+
+.contact-icon {
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 1rem;
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.contact-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.contact-card p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0;
+    overflow-wrap: anywhere; /* long emails won't overflow */
+}
+
+.contact-card strong {
+    color: var(--cream);
+}
+
+/* Small "Now playing: F-14" label, bottom-right */
+.contact-now {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 3.5rem;
+    margin: 0;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(243, 230, 204, 0.5);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.contact-now.show {
+    opacity: 1;
+}
+
+.contact-now span {
+    color: var(--accent);
+}
+
+@media (max-width: 767.98px) {
+    .contact-now {
+        display: none;
+    }
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+    --accent: #e8650a;
+    --cream: #f3e6cc;
+
+    padding: 4rem 0 1.5rem;
+    overflow: hidden;        /* clips the content while it slides in (parallax) */
+    background: #0b0704;     /* near-black with a hint of the site's brown */
+    color: var(--cream);
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Footer parallax: the script sets --footer-offset (negative while the footer is coming
+   into view, 0 at the very bottom of the page), so the content trails behind the scroll
+   and gently settles into place. */
+.parallax-footer > .container-fluid {
+    transform: translateY(calc(var(--footer-offset, 0) * 1px));
+    opacity: calc(1 + var(--footer-offset, 0) / 250);  /* fades in as it settles */
+    will-change: transform, opacity;
+}
+
+.footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+    color: white;
+    text-decoration: none;
+}
+
+.footer-brand:hover {
+    color: white;
+}
+
+.footer-tagline {
+    margin: 0.25rem 0 1.5rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(243, 230, 204, 0.5);
+}
+
+/* Row of round-ish social icons */
+.footer-socials {
+    display: flex;
+    gap: 1.25rem;
+}
+
+.footer-socials a {
+    display: inline-flex;
+    color: rgba(255, 255, 255, 0.85);
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-socials a:hover {
+    color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.footer-socials svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: none;
+    stroke: currentColor;   /* follows the link color, so hover turns it orange */
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Column headings: small, wide, uppercase */
+.footer-heading {
+    margin-bottom: 1.1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: white;
+}
+
+.footer-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-links li + li {
+    margin-top: 0.75rem;
+}
+
+.footer-links a {
+    font-size: 0.95rem;
+    color: rgba(243, 230, 204, 0.75);
+    text-decoration: none;
+    overflow-wrap: anywhere;   /* long emails won't overflow on phones */
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--accent);
+}
+
+.footer-copy {
+    margin: 3.5rem 0 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(243, 230, 204, 0.1);
+    font-size: 0.75rem;
+    text-align: center;
+    color: rgba(243, 230, 204, 0.45);
+}
+
+/* ---------- Section parallax ----------
+   Any <section class="parallax-section"> gets its background on a ::before layer
+   that's 25% taller at the top and bottom. The script at the bottom of index.html
+   sets --offset so the layer slides slower than the page, without showing its edges. */
+.parallax-section {
+    position: relative;
+    overflow: hidden;      /* hide the oversized layer outside the section */
+    isolation: isolate;    /* keeps the z-index: -1 layer behind this section's content only */
+}
+
+.parallax-section::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -25%;
+    bottom: -25%;
+    z-index: -1;
+    transform: translateY(calc(var(--offset, 0) * 1px));
+    will-change: transform;
+}
+
+/* Stop double-tap zoom on phones */
+html {
+    touch-action: manipulation;
+}
