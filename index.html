@@ -115,7 +115,7 @@
                     <div class="about-stats">
                         <div>
                             <span class="about-stat-num">100+</span>
-                            <span class="about-stat-label">Active members</span>
+                            <span class="about-stat-label">Members</span>
                         </div>
                         <div>
                             <span class="about-stat-num">January 15, 2023</span>
@@ -132,7 +132,7 @@
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0z3z7UAbzjV6stGLkRkfJcscpO6uvYXosqYQdMY32QbIOaQ/viewform"
                            class="about-btn about-btn-primary" target="_blank" rel="noopener">Join KGRF</a>
                         <!-- PLACEHOLDER: your Discord invite -->
-                        <a href="https://discord.gg/YOUR-INVITE" class="about-btn about-btn-outline" target="_blank" rel="noopener">Join our Discord</a>
+                        <a href="https://discord.com/invite/35EbfzQxgc" class="about-btn about-btn-outline" target="_blank" rel="noopener">Join our Discord</a>
                     </div>
                 </div>
             </div>
@@ -198,8 +198,8 @@
                     
                 </ul>
 
-                <!-- Opens the KGRF application form (Google Forms) in a new tab -->
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0z3z7UAbzjV6stGLkRkfJcscpO6uvYXosqYQdMY32QbIOaQ/viewform" class="req-join" target="_blank" rel="noopener">Apply Now</a>
+                <!-- Opens the Apply pop-up (form + Discord); the href is a fallback if JavaScript is off -->
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0z3z7UAbzjV6stGLkRkfJcscpO6uvYXosqYQdMY32QbIOaQ/viewform" class="req-join" target="_blank" rel="noopener" data-open-apply>Apply Now</a>
             </div>
         </div>
     </section>
@@ -208,13 +208,97 @@
     <section id="community" class="com-section parallax-section">
         <div class="container-fluid px-4">
             <h2 class="com-title">Community</h2>
-            <p class="com-intro">Our top players and what's happening in the squadron.</p>
+            <p class="com-intro">Squadron news, our top players and what's happening next.</p>
 
             <div class="row g-4">
+                <!-- ===== News & Announcements ===== -->
+                <div class="col-12">
+                    <div class="com-panel com-reveal">
+                        <div class="com-panel-head">
+                            <h3 class="com-heading">
+                                <svg class="com-heading-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                    <!-- Megaphone -->
+                                    <path d="M3 10v4h3l6 4V6L6 10H3zM16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" />
+                                </svg>
+                                News &amp; Announcements
+                            </h3>
+
+                            <!-- Filter buttons: data-filter must match the posts' data-cat ("all" shows everything) -->
+                            <div class="com-filters" role="group" aria-label="Filter news">
+                                <button type="button" class="com-filter is-active" data-filter="all" aria-pressed="true">All</button>
+                                <button type="button" class="com-filter" data-filter="announcement" aria-pressed="false">Announcements</button>
+                                <button type="button" class="com-filter" data-filter="news" aria-pressed="false">News</button>
+                                <button type="button" class="com-filter" data-filter="update" aria-pressed="false">Updates</button>
+                            </div>
+                        </div>
+
+                        <div class="com-news">
+                            <!-- Pinned post: always shown, whatever filter is picked -->
+                            <article class="com-news-pinned">
+                                <span class="com-pin">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 6 4 4H6l4-4zM12 13v8" /></svg>
+                                    Pinned
+                                </span>
+                                <span class="com-tag com-tag-announcement">Announcement</span>
+                                <h4>Recruitment is open</h4>
+                                <p>KGRF is looking for new pilots and tankers ready to fly and fight as a team. Check the requirements, fill out the application form and join our Discord.</p>
+                                <a href="#requirements" class="com-news-btn" data-open-apply>Apply now</a>
+                            </article>
+
+                            <!-- PLACEHOLDER posts: replace the [bracketed] text. Copy an <article> to add more.
+                                 data-cat = announcement | news | update (sets the filter and the tag colour). -->
+                            <div class="com-news-list">
+                                <article class="com-news-item" data-cat="announcement">
+                                    <div class="com-news-meta">
+                                        <span class="com-tag com-tag-announcement">Announcement</span>
+                                        <time>[DD Mon YYYY]</time>
+                                    </div>
+                                    <h4>[Squadron Battles season starts]</h4>
+                                    <p>[Which brackets we're playing, when we meet up and who to message for a spot.]</p>
+                                </article>
+                                <article class="com-news-item" data-cat="news">
+                                    <div class="com-news-meta">
+                                        <span class="com-tag com-tag-news">News</span>
+                                        <time>[DD Mon YYYY]</time>
+                                    </div>
+                                    <h4>[Last season's results]</h4>
+                                    <p>[Final squadron rank, best players and highlights from the season.]</p>
+                                </article>
+                                <article class="com-news-item" data-cat="update">
+                                    <div class="com-news-meta">
+                                        <span class="com-tag com-tag-update">Update</span>
+                                        <time>[DD Mon YYYY]</time>
+                                    </div>
+                                    <h4>[New squadron rules]</h4>
+                                    <p>[What changed, e.g. activity requirements or voice comms during battles.]</p>
+                                </article>
+                                <article class="com-news-item" data-cat="news">
+                                    <div class="com-news-meta">
+                                        <span class="com-tag com-tag-news">News</span>
+                                        <time>[DD Mon YYYY]</time>
+                                    </div>
+                                    <h4>[Welcome our new members]</h4>
+                                    <p>[Names of the pilots and tankers who joined this month.]</p>
+                                </article>
+                            </div>
+                        </div>
+
+                        <p class="com-news-empty" hidden>No posts in this category yet.</p>
+
+                        <a class="com-more" href="https://discord.com/invite/35EbfzQxgc" target="_blank" rel="noopener">See all updates on Discord &rarr;</a>
+                    </div>
+                </div>
+
                 <!-- ===== Top 10 Players ===== -->
                 <div class="col-12 col-lg-6">
                     <div class="com-panel com-reveal">
-                        <h3 class="com-heading">Top 10 Players</h3>
+                        <h3 class="com-heading">
+                            <svg class="com-heading-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <!-- Trophy -->
+                                <path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H4.5a3 3 0 0 0 3.5 4M16 6h3.5a3 3 0 0 1-3.5 4M12 13v4M8 20h8M9.5 17h5" />
+                            </svg>
+                            Top 10 Players
+                        </h3>
 
                         <!-- PLACEHOLDER: replace [Player name], [Role] and the points with real data.
                              Ranks 1–3 get the highlighted style automatically. -->
@@ -279,7 +363,14 @@
                 <!-- ===== Squadron Events ===== -->
                 <div class="col-12 col-lg-6">
                     <div class="com-panel com-reveal">
-                        <h3 class="com-heading">Squadron Events</h3>
+                        <h3 class="com-heading">
+                            <svg class="com-heading-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <!-- Calendar -->
+                                <rect x="3.5" y="5" width="17" height="15" rx="2" />
+                                <path d="M3.5 10h17M8 3v4M16 3v4" />
+                            </svg>
+                            Squadron Events
+                        </h3>
 
                         <!-- PLACEHOLDER: replace the [bracketed] dates/times. Copy an <li> to add more events. -->
                         <ul class="com-events">
@@ -336,11 +427,11 @@
             <p class="contact-intro">Ready to roll out with us? Reach out and we'll get you in the line.</p>
 
             <!-- PLACEHOLDER links: replace the href values with your real Discord invite / email / etc. -->
-            <a href="https://discord.gg/YOUR-INVITE" class="contact-cta" target="_blank" rel="noopener">Join our Discord</a>
+            <a href="https://discord.com/invite/35EbfzQxgc" class="contact-cta" target="_blank" rel="noopener">Join our Discord</a>
 
             <div class="row g-4 contact-cards">
                 <div class="col-12 col-md-4">
-                    <a class="contact-card" href="https://discord.gg/YOUR-INVITE" target="_blank" rel="noopener">
+                    <a class="contact-card" href="https://discord.com/invite/35EbfzQxgc" target="_blank" rel="noopener">
                         <svg class="contact-icon" viewBox="0 0 64 64" aria-hidden="true">
                             <!-- Chat bubble -->
                             <path d="M10 14h44v28H30l-12 10V42h-8z" />
@@ -351,14 +442,14 @@
                     </a>
                 </div>
                 <div class="col-12 col-md-4">
-                    <a class="contact-card" href="mailto:your-email@example.com">
+                    <a class="contact-card" href="mailto:shirohayami.wt@gmail.com" data-open-mail>
                         <svg class="contact-icon" viewBox="0 0 64 64" aria-hidden="true">
                             <!-- Envelope -->
                             <rect x="8" y="14" width="48" height="36" rx="4" />
                             <path d="M10 18l22 17 22-17" />
                         </svg>
                         <h3>Email</h3>
-                        <p>[your-email@example.com]</p>
+                        <p>shirohayami.wt@gmail.com</p>
                     </a>
                 </div>
                 <div class="col-12 col-md-4">
@@ -379,6 +470,73 @@
         <p class="contact-now" aria-hidden="true">Now playing: <span></span></p>
     </section>
 
+    <!-- Mail pop-up: opened by any [data-open-mail] link (Email card, footer email).
+         Messages go to the inbox below through FormSubmit (formsubmit.co, free, no account).
+         The very FIRST message triggers a one-time "Activate form" email to that inbox — click it,
+         and every message after that is delivered normally. -->
+    <!-- Apply pop-up: opened by any [data-open-apply] link (Apply Now) -->
+    <dialog class="pop-dialog apply-dialog" aria-labelledby="apply-dialog-title">
+        <button type="button" class="pop-close" aria-label="Close">&times;</button>
+        <div class="contact-card apply-panel">
+            <h3 id="apply-dialog-title">Apply to KGRF</h3>
+            <p class="apply-lead">Fill out the application form, then join our Discord so we can reach you.</p>
+
+            <div class="apply-options">
+                <a class="apply-option" href="https://docs.google.com/forms/d/e/1FAIpQLSe0z3z7UAbzjV6stGLkRkfJcscpO6uvYXosqYQdMY32QbIOaQ/viewform" target="_blank" rel="noopener">
+                    <svg class="contact-icon" viewBox="0 0 64 64" aria-hidden="true">
+                        <!-- Clipboard -->
+                        <rect x="14" y="10" width="36" height="46" rx="4" />
+                        <path d="M24 10V6h16v4M22 26h20M22 36h20M22 46h12" />
+                    </svg>
+                    <span class="apply-step">Step 1</span>
+                    <span class="apply-name">Application Form</span>
+                    <span class="apply-desc">Opens the KGRF Google Form in a new tab.</span>
+                </a>
+                <a class="apply-option" href="https://discord.com/invite/35EbfzQxgc" target="_blank" rel="noopener">
+                    <svg class="contact-icon" viewBox="0 0 64 64" aria-hidden="true">
+                        <!-- Chat bubble -->
+                        <path d="M10 14h44v28H30l-12 10V42h-8z" />
+                        <path d="M22 28h0M32 28h0M42 28h0" />
+                    </svg>
+                    <span class="apply-step">Step 2</span>
+                    <span class="apply-name">Join our Discord</span>
+                    <span class="apply-desc">Squadron battles, events and comms.</span>
+                </a>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="pop-dialog mail-dialog" aria-labelledby="mail-dialog-title">
+        <button type="button" class="pop-close" aria-label="Close">&times;</button>
+        <form class="contact-card contact-form" action="https://formsubmit.co/ajax/shirohayami.wt@gmail.com" method="POST">
+            <h3 id="mail-dialog-title">Send us a message</h3>
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <label for="cf-name">Name / IGN</label>
+                    <input id="cf-name" name="name" type="text" required maxlength="80" autocomplete="nickname">
+                </div>
+                <div class="col-12 col-md-6">
+                    <label for="cf-email">Your email</label>
+                    <input id="cf-email" name="email" type="email" required autocomplete="email">
+                </div>
+                <div class="col-12">
+                    <label for="cf-message">Message</label>
+                    <textarea id="cf-message" name="message" rows="5" required maxlength="3000"></textarea>
+                </div>
+            </div>
+
+            <!-- FormSubmit settings -->
+            <input type="hidden" name="_subject" value="New message from the KGRF website">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+            <!-- Spam trap: hidden from people, bots fill it in and get dropped -->
+            <input type="text" name="_honey" class="contact-honey" tabindex="-1" autocomplete="off">
+
+            <button type="submit" class="contact-cta contact-send">Send Message</button>
+            <p class="contact-status" role="status" aria-live="polite"></p>
+        </form>
+    </dialog>
+
     <!-- Footer -->
     <footer class="site-footer parallax-footer">
         <div class="container-fluid px-4 px-lg-5">
@@ -390,16 +548,10 @@
 
                     <!-- PLACEHOLDER: replace each href with your real page -->
                     <div class="footer-socials">
-                        <a href="https://facebook.com/YOUR-PAGE" target="_blank" rel="noopener" aria-label="Facebook">
+                        <a href="https://web.facebook.com/ShiroHaya" target="_blank" rel="noopener" aria-label="Facebook">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M15 8h-1.5A2.5 2.5 0 0 0 11 10.5V22M8.5 13.5h6" /></svg>
                         </a>
-                        <a href="https://youtube.com/@YOUR-CHANNEL" target="_blank" rel="noopener" aria-label="YouTube">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4" /><path d="M10 9l5 3-5 3z" /></svg>
-                        </a>
-                        <a href="https://tiktok.com/@YOUR-ACCOUNT" target="_blank" rel="noopener" aria-label="TikTok">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v12.5a3.5 3.5 0 1 1-3.5-3.5M14 3a5 5 0 0 0 5 5" /></svg>
-                        </a>
-                        <a href="https://discord.gg/YOUR-INVITE" target="_blank" rel="noopener" aria-label="Discord">
+                        <a href="https://discord.com/invite/35EbfzQxgc" target="_blank" rel="noopener" aria-label="Discord">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11h-9l-4 3.5V16H4z" /><path d="M9 10.5h0M15 10.5h0" /></svg>
                         </a>
                     </div>
@@ -423,8 +575,8 @@
                 <div class="col-6 col-md-3 col-lg-2">
                     <h4 class="footer-heading">Contact</h4>
                     <ul class="footer-links">
-                        <li><a href="mailto:your-email@example.com">your-email@example.com</a></li>
-                        <li><a href="https://discord.gg/YOUR-INVITE" target="_blank" rel="noopener">Discord</a></li>
+                        <li><a href="mailto:shirohayami.wt@gmail.com" data-open-mail>shirohayami.wt@gmail.com</a></li>
+                        <li><a href="https://discord.com/invite/35EbfzQxgc" target="_blank" rel="noopener">Discord</a></li>
                     </ul>
                 </div>
                 <div class="col-6 col-md-3 col-lg-2">
@@ -566,6 +718,38 @@
         }, { threshold: 0.2 });
 
         document.querySelectorAll('.com-reveal').forEach(el => comObserver.observe(el));
+
+        // News filters: show only the posts whose data-cat matches the clicked button
+        const newsFilters = document.querySelectorAll('.com-filter');
+        const newsItems = document.querySelectorAll('.com-news-item');
+        const newsEmpty = document.querySelector('.com-news-empty');
+
+        newsFilters.forEach(btn => btn.addEventListener('click', () => {
+            const cat = btn.dataset.filter;
+            newsFilters.forEach(b => {
+                b.classList.toggle('is-active', b === btn);
+                b.setAttribute('aria-pressed', b === btn);
+            });
+            let shown = 0;
+            newsItems.forEach(item => {
+                const match = cat === 'all' || item.dataset.cat === cat;
+                item.hidden = !match;
+                if (match) shown++;
+            });
+            newsEmpty.hidden = shown > 0;
+        }));
+
+        // Leaderboard: a bar under each name, sized against the #1 player's points
+        const players = document.querySelectorAll('.com-player');
+        const topPoints = Math.max(...[...players].map(p => parseFloat(p.querySelector('.com-points').textContent.replace(/,/g, '')) || 0));
+        players.forEach(p => {
+            const pts = parseFloat(p.querySelector('.com-points').textContent.replace(/,/g, '')) || 0;
+            const bar = document.createElement('span');
+            bar.className = 'com-bar';
+            bar.setAttribute('aria-hidden', 'true');
+            bar.style.setProperty('--pct', topPoints > 0 ? (pts / topPoints * 100) + '%' : '0%');
+            p.querySelector('.com-name').appendChild(bar);
+        });
     </script>
 
     <!-- Contact Us: play the videos in the videos folder one after another -->
@@ -635,6 +819,73 @@
             }, { threshold: 0.1 });
             vidObserver.observe(contactSection);
         }
+    </script>
+
+    <!-- Contact form: send in the background and show the result on the card -->
+    <script>
+        const contactForm = document.querySelector('.contact-form');
+        const formStatus = contactForm.querySelector('.contact-status');
+        const sendBtn = contactForm.querySelector('.contact-send');
+
+        contactForm.addEventListener('submit', async e => {
+            e.preventDefault();
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Sending…';
+            formStatus.className = 'contact-status';
+            formStatus.textContent = '';
+
+            try {
+                const res = await fetch(contactForm.action, {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: new FormData(contactForm)
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || String(data.success) === 'false') throw new Error(data.message);
+
+                contactForm.reset();
+                formStatus.classList.add('is-ok');
+                formStatus.textContent = "Message sent! We'll get back to you soon.";
+            } catch (err) {
+                formStatus.classList.add('is-error');
+                formStatus.textContent = "Couldn't send right now. Please try again, or email us at shirohayami.wt@gmail.com.";
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Send Message';
+            }
+        });
+    </script>
+
+    <!-- Pop-ups: email links open the mail form, Apply Now opens the apply window
+         (each link's href stays as a fallback if JavaScript is off) -->
+    <script>
+        const mailDialog = document.querySelector('.mail-dialog');
+        const applyDialog = document.querySelector('.apply-dialog');
+
+        document.querySelectorAll('[data-open-mail]').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                formStatus.textContent = '';
+                mailDialog.showModal();
+                mailDialog.querySelector('#cf-name').focus();
+            });
+        });
+
+        document.querySelectorAll('[data-open-apply]').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                applyDialog.showModal();
+            });
+        });
+
+        document.querySelectorAll('.pop-dialog').forEach(dialog => {
+            dialog.querySelector('.pop-close').addEventListener('click', () => dialog.close());
+
+            // Clicking the dark backdrop (outside the card) closes it too. Esc works on its own.
+            dialog.addEventListener('click', e => {
+                if (e.target === dialog) dialog.close();
+            });
+        });
     </script>
 </body>
 </html>
