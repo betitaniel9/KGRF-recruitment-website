@@ -612,7 +612,17 @@
         function updateNav() {
             nav.classList.toggle('scrolled', window.scrollY > 50);
         }
-        window.addEventListener('scroll', updateNav);
+        // Run scroll work at most once per frame instead of on every scroll event
+        function onScrollFrame(fn) {
+            let queued = false;
+            window.addEventListener('scroll', () => {
+                if (queued) return;
+                queued = true;
+                requestAnimationFrame(() => { queued = false; fn(); });
+            }, { passive: true });
+        }
+
+        onScrollFrame(updateNav);
 
         // Selected link: highlight the nav link for whichever section is on screen
         const navLinks = document.querySelectorAll('.site-nav .nav-link');
@@ -647,7 +657,7 @@
             setActive(current.link);
         }
 
-        window.addEventListener('scroll', updateActive);
+        onScrollFrame(updateActive);
         updateActive();
 
         // On phones: close the dropdown menu after tapping a link
@@ -675,28 +685,32 @@
         const FOOTER_SPEED = 0.4;   // 0 = no effect; higher = content lags further behind
 
         function updateParallax() {
-            // Hero: only bother while it's still on screen
+            // 1) Measure everything first. Measuring after changing a style forces the browser
+            //    to recalculate the page in the middle of the frame, so reads and writes are kept apart.
+            const viewH = window.innerHeight;
             const y = Math.min(window.scrollY, hero.offsetHeight);
+            const sectionRects = [...parallaxSections].map(section => section.getBoundingClientRect());
+            const footerRect = footer ? footer.getBoundingClientRect() : null;
+
+            // 2) Then apply the changes.
+            // Hero: only bother while it's still on screen
             hero.style.setProperty('--scroll', y);
 
             // Sections: shift the background by how far the section's middle is from the screen's middle
-            parallaxSections.forEach(section => {
-                const rect = section.getBoundingClientRect();
-                if (rect.bottom < 0 || rect.top > window.innerHeight) return; // off screen
+            parallaxSections.forEach((section, i) => {
+                const rect = sectionRects[i];
+                if (rect.bottom < 0 || rect.top > viewH) return; // off screen
 
-                const fromCenter = rect.top + rect.height / 2 - window.innerHeight / 2;
+                const fromCenter = rect.top + rect.height / 2 - viewH / 2;
                 const limit = rect.height * 0.25; // matches the -25% top/bottom in the CSS
                 const offset = Math.max(-limit, Math.min(limit, -fromCenter * SECTION_SPEED));
                 section.style.setProperty('--offset', offset.toFixed(1));
             });
 
             // Footer: content starts shifted up and settles as you reach the bottom of the page
-            if (footer) {
-                const rect = footer.getBoundingClientRect();
-                if (rect.top < window.innerHeight) {
-                    const belowScreen = Math.max(0, rect.bottom - window.innerHeight); // px of footer still hidden
-                    footer.style.setProperty('--footer-offset', (-belowScreen * FOOTER_SPEED).toFixed(1));
-                }
+            if (footerRect && footerRect.top < viewH) {
+                const belowScreen = Math.max(0, footerRect.bottom - viewH); // px of footer still hidden
+                footer.style.setProperty('--footer-offset', (-belowScreen * FOOTER_SPEED).toFixed(1));
             }
 
             ticking = false;
@@ -710,7 +724,7 @@
         }
 
         if (!reduceMotion) {
-            window.addEventListener('scroll', requestUpdate);
+            window.addEventListener('scroll', requestUpdate, { passive: true });
             window.addEventListener('resize', requestUpdate);
             updateParallax();
         }

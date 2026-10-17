@@ -708,9 +708,9 @@ html {
 .com-shell {
     position: relative;
     padding: 0.75rem 0.75rem 2rem;
-    background: linear-gradient(160deg, rgba(36, 22, 10, 0.55), rgba(14, 9, 5, 0.55));
-    -webkit-backdrop-filter: blur(16px) saturate(130%);
-    backdrop-filter: blur(16px) saturate(130%);
+    /* Fairly solid instead of a live blur: blurring the moving parallax photo behind
+       a card this big is redone every frame while scrolling, which is what made it lag */
+    background: linear-gradient(160deg, rgba(36, 22, 10, 0.82), rgba(14, 9, 5, 0.86));
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 1.25rem;
     box-shadow:
@@ -1354,19 +1354,30 @@ html {
     color: var(--muted);
 }
 
-/* First event = next up: solid date block with a soft pulsing glow */
+/* First event = next up: solid date block with a soft pulsing ring */
 .com-event:first-child .com-date {
     background: linear-gradient(135deg, #ff7a1a, var(--accent));
     border-color: var(--accent);
-    animation: com-glow 2.6s ease-in-out infinite;
+}
+
+/* The ring only animates transform + opacity, which the GPU handles without repainting the page
+   (animating box-shadow instead repaints every frame) */
+.com-event:first-child .com-date::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border: 2px solid var(--accent);
+    border-radius: inherit;
+    pointer-events: none;
+    animation: com-ring 2.6s ease-out infinite;
 }
 
 .com-event:first-child .com-day { color: #1a0f06; }
 .com-event:first-child .com-month { color: rgba(26, 15, 6, 0.8); }
 
-@keyframes com-glow {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(232, 101, 10, 0.45); }
-    50%      { box-shadow: 0 0 0 10px rgba(232, 101, 10, 0); }
+@keyframes com-ring {
+    0%        { opacity: 0.7; transform: scale(1); }
+    70%, 100% { opacity: 0;   transform: scale(1.3); }
 }
 
 .com-next {
@@ -1447,7 +1458,7 @@ html {
     }
 
     .com-view.is-active .com-anim,
-    .com-event:first-child .com-date {
+    .com-event:first-child .com-date::after {
         animation: none;
     }
 }
@@ -1573,9 +1584,8 @@ html {
     padding: 2rem 1.5rem;
     color: var(--cream);
     text-decoration: none;
-    background: rgba(20, 12, 6, 0.45);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    /* No live blur here: it would be recalculated on every frame of the video behind it */
+    background: rgba(20, 12, 6, 0.72);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 0.75rem;
     transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
@@ -1586,7 +1596,7 @@ a.contact-card:hover {
     color: var(--cream);
     transform: translateY(-4px);
     border-color: rgba(232, 101, 10, 0.5);
-    background: rgba(20, 12, 6, 0.6);
+    background: rgba(20, 12, 6, 0.85);
 }
 
 .contact-icon {
