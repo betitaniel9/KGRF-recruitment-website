@@ -162,20 +162,40 @@ a, button, .btn, [role="button"] {
     overflow: hidden;
 }
 
+/* Portrait screens (phones): the hero images are wide (16:9), so a full-height banner
+   would zoom in on a thin strip. Make the banner shorter so more of the picture shows. */
+@media (max-aspect-ratio: 1/1) {
+    .hero-banner {
+        height: min(100vh, max(80vw, 22rem));
+    }
+}
+
 /* Shared settings for both image layers */
 .hero-layer {
     position: absolute;
     inset: 0;             /* top/right/bottom/left: 0, so it fills the banner */
+}
+
+/* Slideshow: every slide sits on top of each other; only the .active one is visible.
+   The images themselves are set inline in index.html. */
+.hero-slide {
+    position: absolute;
+    inset: 0;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;  /* crossfade between slides */
+}
+
+.hero-slide.active {
+    opacity: 1;
 }
 
 /* Parallax: --scroll is set by the script at the bottom of index.html.
    The bigger the multiplier, the slower the layer seems to move (it looks farther away). */
 .hero-layer-1 {
-    background-image: url('../images/Hero_layer1.png');
-    z-index: 1;           /* bottom */
+    z-index: 1;          /* bottom */
     transform: translateY(calc(var(--scroll, 0) * 0.5px));
     will-change: transform;
 }
@@ -193,7 +213,7 @@ a, button, .btn, [role="button"] {
 
 .hero-text {
     font-family: 'Monoton', sans-serif;
-    font-size: clamp(23rem, 20vw, 15rem); /* shrinks on small screens */
+    font-size: clamp(3rem, 20vw, 23rem); /* clamp(min, preferred, max): shrinks on small screens */
     line-height: 1;
     margin: 0 0 -0.15em;  /* pull the subtitle up into Monoton's empty space below the letters */
     white-space: nowrap;
@@ -263,8 +283,7 @@ a, button, .btn, [role="button"] {
 }
 
 .hero-layer-2 {
-    background-image: url('../images/Hero_layer2.png');
-    z-index: 3;           /* top */
+    z-index: 3;          /* top */
     pointer-events: none; /* lets clicks pass through to the text */
     transform: translateY(calc(var(--scroll, 0) * 0.1px));
     will-change: transform;

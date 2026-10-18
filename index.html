@@ -46,9 +46,16 @@
         </div>
     </nav>
 
-    <!-- Hero: layer 1 (back) / title (middle) / layer 2 (front) -->
+    <!-- Hero: layer 1 (back) / title (middle) / layer 2 (front)
+         Each layer holds one slide per vehicle. Slide N in layer 1 is the background for slide N in layer 2,
+         so keep them in the same order. The script at the bottom swaps the "active" one every 5 seconds. -->
     <div class="hero-banner">
-        <div class="hero-layer hero-layer-1"></div>
+        <div class="hero-layer hero-layer-1">
+            <div class="hero-slide active" style="background-image: url('images/Leo-BG.png');"></div>
+            <div class="hero-slide" style="background-image: url('images/F14-BG.png');"></div>
+            <div class="hero-slide" style="background-image: url('images/Bismarck-BG.png');"></div>
+            <div class="hero-slide" style="background-image: url('images/Comanche-BG.png');"></div>
+        </div>
         <div class="hero-title">
             <!-- Each letter is its own span so they can slide up one after another.
                  aria-label keeps screen readers reading "KGRF" as one word. -->
@@ -60,7 +67,12 @@
                 <span>Filipinas</span>
             </div>
         </div>
-        <div class="hero-layer hero-layer-2"></div>
+        <div class="hero-layer hero-layer-2">
+            <div class="hero-slide active" style="background-image: url('images/Leo.png');"></div>
+            <div class="hero-slide" style="background-image: url('images/F-14.png');"></div>
+            <div class="hero-slide" style="background-image: url('images/Bismarck.png');"></div>
+            <div class="hero-slide" style="background-image: url('images/Comanche.png');"></div>
+        </div>
     </div>
 
     <!-- About Us -->
@@ -668,6 +680,24 @@
             }
         }));
         updateNav(); // also run on load, in case the page opens already scrolled
+    </script>
+
+    <!-- Hero slideshow: every 5 seconds, show the next background + foreground pair together -->
+    <script>
+        (() => {
+            const SLIDE_INTERVAL = 5000; // ms
+            const backSlides = document.querySelectorAll('.hero-layer-1 .hero-slide');
+            const frontSlides = document.querySelectorAll('.hero-layer-2 .hero-slide');
+            let current = 0;
+
+            setInterval(() => {
+                backSlides[current].classList.remove('active');
+                frontSlides[current].classList.remove('active');
+                current = (current + 1) % backSlides.length;
+                backSlides[current].classList.add('active');
+                frontSlides[current].classList.add('active');
+            }, SLIDE_INTERVAL);
+        })();
     </script>
 
     <!-- Parallax: hand the scroll position to the hero's CSS (see .hero-layer-1 etc.) -->
