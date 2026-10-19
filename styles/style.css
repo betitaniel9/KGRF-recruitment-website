@@ -686,7 +686,7 @@ html {
 }
 
 /* Photo on the parallax layer with a heavy tint.
-   Save a photo as images/CommunityBG.png and it's used automatically;
+   Save a photo as images/CommunityBG.jpg and it's used automatically;
    until then Hero_layer1.png underneath shows instead. */
 .com-section.parallax-section::before {
     background:
@@ -1716,19 +1716,107 @@ a.contact-card:hover {
 }
 
 /* ----- Apply pop-up ----- */
-.apply-panel {
+/* No outer frame: the step cards float on the dimmed page, so the staggered layout leaves no empty box */
+.pop-dialog .apply-panel {
     padding: 2rem;
     text-align: center;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.apply-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.78);
+}
+
+.apply-panel h3,
+.apply-panel .apply-lead {
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 .apply-panel .apply-lead {
     margin-bottom: 1.5rem;
 }
 
+/* Staggered steps: Step 1 top-left, looped arrow, Step 2 bottom-right */
 .apply-options {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-    gap: 1rem;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+}
+
+.apply-option:first-child {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.apply-option:last-child {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 3rem;
+}
+
+.apply-arrow {
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+    overflow: visible;
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Arrow draws itself in when the pop-up opens */
+.apply-dialog[open] .apply-arrow path:first-child {
+    stroke-dasharray: 1;
+    animation: apply-arrow-draw 0.7s 0.2s ease-out both;
+}
+
+.apply-dialog[open] .apply-arrow-head {
+    animation: apply-arrow-head 0.2s 0.85s ease-out both;
+}
+
+@keyframes apply-arrow-draw {
+    from { stroke-dashoffset: 1; }
+    to   { stroke-dashoffset: 0; }
+}
+
+@keyframes apply-arrow-head {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .apply-dialog[open] .apply-arrow path { animation: none; }
+}
+
+/* Phones: one column, cards still offset left/right with the arrow between */
+@media (max-width: 575.98px) {
+    .apply-options {
+        grid-template-columns: 1fr;
+    }
+
+    .apply-option:first-child,
+    .apply-option:last-child {
+        grid-column: 1;
+        width: 85%;
+    }
+
+    .apply-option:first-child { justify-self: start; }
+
+    .apply-arrow {
+        grid-row: 2;
+        justify-self: center;
+        width: 9rem;
+    }
+
+    .apply-option:last-child {
+        grid-row: 3;
+        justify-self: end;
+        margin-top: 0;
+    }
 }
 
 .apply-option {
@@ -1738,9 +1826,10 @@ a.contact-card:hover {
     padding: 1.5rem 1rem;
     color: var(--cream);
     text-decoration: none;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(20, 12, 6, 0.94);
+    border: 1px solid rgba(232, 101, 10, 0.35);
     border-radius: 0.6rem;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
     transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
@@ -1749,7 +1838,7 @@ a.contact-card:hover {
     color: var(--cream);
     transform: translateY(-3px);
     border-color: var(--accent);
-    background: rgba(232, 101, 10, 0.12);
+    background: rgb(44, 22, 8);
 }
 
 .apply-option .contact-icon {
